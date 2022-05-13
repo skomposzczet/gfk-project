@@ -2,12 +2,14 @@
 #define BOARD_H_
 
 #include <vector>
+#include <string>
+#include <iostream>
 #include "square.hpp"
 
 class Board: public sf::Drawable
 {
 public:
-    Board(const unsigned height = 5, const unsigned width = 6);
+    Board(const std::string& filename, const unsigned height = 5, const unsigned width = 6);
 
 protected:
 
@@ -15,6 +17,8 @@ private:
     const unsigned _height;
     const unsigned _width;
     std::vector<std::vector<Square>> _board;
+
+    sf::Texture _texture;
 
     /**
      * @returns id based on given position indexes 
