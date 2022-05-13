@@ -40,7 +40,14 @@ public:
         return true;
     }
 
+    void move(sf::Vector2i mouse_position)
+    {
+        if (mode == Mode::normal)
+            _move(mouse_position);
+    }
+
 protected:
+    virtual void _move(sf::Vector2i mouse_position) = 0; 
 
 private:
     const unsigned _height;
