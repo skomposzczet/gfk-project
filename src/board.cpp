@@ -15,7 +15,7 @@ Board::Board(const std::string& filename, const unsigned height, const unsigned 
         std::vector<Square> temp;
         temp.reserve(_width);
         for(unsigned j = 0 ; j < _width ; ++j)
-            temp.emplace_back(Square(get_id(i, j)));
+            temp.emplace_back(Square(get_id(i, j), i, j, _texture));
 
         _board.emplace_back(temp);
     }
