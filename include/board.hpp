@@ -30,6 +30,9 @@ public:
         mode = ( mode == Mode::normal ? Mode::preview : Mode::normal );
     }
 
+    /**
+     * @returns true if game is solved, false otherwise
+     */
     virtual bool solved() const
     {
         for(unsigned i = 0 ; i < _height ; ++i)
@@ -40,6 +43,11 @@ public:
         return true;
     }
 
+    /**
+     * @brief If game is in normal mode calls actual move function, doesnt do anything in preview mode 
+     * 
+     * @param mouse_position Click position
+     */
     void move(sf::Vector2i mouse_position)
     {
         if (mode == Mode::normal)
@@ -47,7 +55,7 @@ public:
     }
 
 protected:
-    virtual void _move(sf::Vector2i mouse_position) = 0; 
+    virtual void _move(sf::Vector2i mouse_position) = 0; // internal implementation of move
 
 private:
     const unsigned _height;
