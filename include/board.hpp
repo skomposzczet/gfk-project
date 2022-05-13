@@ -55,13 +55,13 @@ public:
     }
 
 protected:
-    virtual void _move(sf::Vector2i mouse_position) = 0; // internal implementation of move
-
-private:
     const unsigned _height;
     const unsigned _width;
     std::vector<std::vector<Square>> _board;
 
+    virtual void _move(sf::Vector2i mouse_position) = 0; // internal implementation of move
+
+private:
     sf::Texture _texture;
     sf::RenderTexture _render_texture;
     sf::Sprite _sprite;
