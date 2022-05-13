@@ -9,14 +9,25 @@ Board::Board(const std::string& filename, const unsigned height, const unsigned 
         exit(1);
     }
 
+    _render_texture.create(1185, 1000);
+    _render_texture.clear(sf::Color::White);
+
+    _sprite.setTexture(_render_texture.getTexture());
+    _sprite.setPosition(sf::Vector2f(.0f, .0f));
+
     _board.reserve(_height);
     for(unsigned i = 0 ; i < _height ; ++i)
     {
         std::vector<Square> temp;
         temp.reserve(_width);
         for(unsigned j = 0 ; j < _width ; ++j)
+        {
             temp.emplace_back(Square(get_id(i, j), i, j, _texture));
+            _render_texture.draw(temp.at(j));
+        }
 
         _board.emplace_back(temp);
     }
+
+    _render_texture.display();
 }

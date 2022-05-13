@@ -13,9 +13,21 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
-        for(unsigned i = 0 ; i < _height ; ++i)
-            for(unsigned j = 0 ; j < _width ; ++j)
-                target.draw(_board.at(i).at(j));
+        if (mode == Mode::normal)
+        {
+            for(unsigned i = 0 ; i < _height ; ++i)
+                for(unsigned j = 0 ; j < _width ; ++j)
+                    target.draw(_board.at(i).at(j));
+        }
+        else if (mode == Mode::preview)
+        {
+            target.draw(_sprite);
+        }
+    }
+
+    void switch_mode()
+    {
+        mode = ( mode == Mode::normal ? Mode::preview : Mode::normal );
     }
 
 protected:
@@ -26,6 +38,11 @@ private:
     std::vector<std::vector<Square>> _board;
 
     sf::Texture _texture;
+    sf::RenderTexture _render_texture;
+    sf::Sprite _sprite;
+
+    enum class Mode {normal, preview};
+    Mode mode = Mode::normal; 
 
     /**
      * @returns id based on given position indexes 
