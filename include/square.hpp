@@ -10,6 +10,9 @@ public:
         : _id{id}
     {}
 
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+    {}
+
 private:
     const int _id;
 };
