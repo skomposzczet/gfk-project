@@ -17,9 +17,9 @@ private:
     std::vector<std::vector<Square>> _board;
 
     /**
-     * @returns index based on given position indexes 
+     * @returns id based on given position indexes 
      */
-    unsigned get_index(const unsigned i, const unsigned j) const { return i*_width + j; }
+    unsigned get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
 };
 
 #endif // BOARD_H_
