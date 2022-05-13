@@ -30,6 +30,16 @@ public:
         mode = ( mode == Mode::normal ? Mode::preview : Mode::normal );
     }
 
+    virtual bool solved() const
+    {
+        for(unsigned i = 0 ; i < _height ; ++i)
+            for(unsigned j = 0 ; j < _width ; ++j)
+                if (get_id(i, j) != _board.at(i).at(j).id())
+                    return false;
+
+        return true;
+    }
+
 protected:
 
 private:
