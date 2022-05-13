@@ -39,6 +39,17 @@ public:
     }
 
     /**
+     * @brief Sets new squares position
+     * 
+     * @param i x index of square
+     * @param j y index of square
+     */
+    void change_position(const unsigned i, const unsigned j)
+    {
+        _sprite.setPosition(get_position(i, j));
+    }
+
+    /**
      * @brief Flips square vertically
      */
     void flip_vertical()
