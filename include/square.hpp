@@ -44,6 +44,7 @@ public:
     void flip_vertical()
     {
         _sprite.scale(-1, 1);
+        _flip_ver = !_flip_ver;
     }
 
     /**
@@ -52,12 +53,16 @@ public:
     void flip_horizontal()
     {
         _sprite.scale(1, -1);
+        _flip_hor = !_flip_hor;
     }
 
 private:
     const int _id;
 
     sf::Sprite _sprite;
+
+    bool _flip_hor = false;
+    bool _flip_ver = false;
 
     /**
      * @param i x index of square
