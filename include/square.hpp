@@ -38,6 +38,22 @@ public:
         target.draw(_sprite);
     }
 
+    /**
+     * @brief Flips square vertically
+     */
+    void flip_vertical()
+    {
+        _sprite.scale(-1, 1);
+    }
+
+    /**
+     * @brief Flips square horizontally
+     */
+    void flip_horizontal()
+    {
+        _sprite.scale(1, -1);
+    }
+
 private:
     const int _id;
 
