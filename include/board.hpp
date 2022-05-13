@@ -11,6 +11,13 @@ class Board: public sf::Drawable
 public:
     Board(const std::string& filename, const unsigned height = 5, const unsigned width = 6);
 
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+    {
+        for(unsigned i = 0 ; i < _height ; ++i)
+            for(unsigned j = 0 ; j < _width ; ++j)
+                target.draw(_board.at(i).at(j));
+    }
+
 protected:
 
 private:

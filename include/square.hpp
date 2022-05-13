@@ -34,7 +34,9 @@ public:
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-    {}
+    {
+        target.draw(_sprite);
+    }
 
 private:
     const int _id;
