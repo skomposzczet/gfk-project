@@ -43,11 +43,21 @@ private:
 
     sf::Sprite _sprite;
 
+    /**
+     * @param i x index of square
+     * @param j y index of square
+     * @returns Position of top left corner of desired part of texture based on squares indexes 
+     */
     static sf::Vector2i get_ground_zero(const unsigned i, const unsigned j)
     {
         return sf::Vector2i(j * dimension::size, i * dimension::size);
     }
 
+    /**
+     * @param i x index of square
+     * @param j y index of square
+     * @return Position of square on the screen based on its indexes
+     */
     static sf::Vector2f get_position(const unsigned i, const unsigned j)
     {
         return sf::Vector2f(static_cast<float>(dimension::margin) + j * (dimension::size + dimension::gap) + dimension::size/2, static_cast<float>(dimension::margin) + i * (dimension::size + dimension::gap) + dimension::size/2);
