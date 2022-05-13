@@ -47,7 +47,7 @@ private:
     /**
      * @returns id based on given position indexes 
      */
-    unsigned get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
+    int get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
 };
 
 #endif // BOARD_H_
