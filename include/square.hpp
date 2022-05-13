@@ -56,6 +56,22 @@ public:
         _flip_hor = !_flip_hor;
     }
 
+    /**
+     * @returns id of square if it is not flipped, negative value otherwise 
+     */
+    int check() const
+    {
+        return ( _flip_ver || _flip_hor ? -1 : _id );
+    }
+
+    /**
+     * @returns id of square 
+     */
+    int id() const
+    {
+        return _id;
+    }
+
 private:
     const int _id;
 
