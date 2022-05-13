@@ -31,3 +31,27 @@ Board::Board(const std::string& filename, const unsigned height, const unsigned 
 
     _render_texture.display();
 }
+
+void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    if (mode == Mode::normal)
+    {
+        for(unsigned i = 0 ; i < _height ; ++i)
+            for(unsigned j = 0 ; j < _width ; ++j)
+                target.draw(_board.at(i).at(j));
+    }
+    else if (mode == Mode::preview)
+    {
+        target.draw(_sprite);
+    }
+}
+
+bool Board::solved() const
+{
+    for(unsigned i = 0 ; i < _height ; ++i)
+        for(unsigned j = 0 ; j < _width ; ++j)
+            if (get_id(i, j) != _board.at(i).at(j).id())
+                return false;
+
+    return true;
+}
