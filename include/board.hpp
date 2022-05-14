@@ -40,6 +40,8 @@ public:
             _move(mouse_position);
     }
 
+    virtual void scramble() = 0; // scrambling puzzle 
+
 protected:
     const unsigned _height;
     const unsigned _width;
