@@ -10,7 +10,7 @@ Board::Board(const std::string& filename, const unsigned height, const unsigned 
     }
 
     _render_texture.create(1185, 1000);
-    _render_texture.clear(sf::Color::White);
+    _render_texture.clear(sf::Color::Black);
 
     _sprite.setTexture(_render_texture.getTexture());
     _sprite.setPosition(sf::Vector2f(.0f, .0f));
