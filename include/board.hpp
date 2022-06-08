@@ -84,6 +84,8 @@ private:
 
     enum class Mode {normal, preview};
     Mode mode = Mode::normal; 
+     /** 1 - first mode, 2- second mode */
+    int modeOfgame = 1;
 };
 
 #endif // BOARD_H_
