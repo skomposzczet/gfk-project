@@ -40,7 +40,30 @@ public:
             _move(mouse_position);
     }
 
-    virtual void scramble() = 0; // scrambling puzzle 
+    /**
+     * @brief Scrambles two squares that are next to place where user clicked
+     * 
+     * @param i First coordinate of a left square
+     * @param j Second coordinate of a left square
+     * @param mode 0 flips horizontally, 1 flips vertically
+     */
+    virtual void scramble(int i, int j, int mode) = 0; // scrambling puzzle 
+
+
+    /** @brief sets 1 for first vesrion of game and 2 for the second one*/
+    virtual void setMode(sf::Keyboard::Key toSet)=0;
+
+    virtual int getMode()const=0;
+
+    /** @returns height of an inage*/
+    unsigned getHeight()const{
+        return _height;
+    }
+
+    /** @returns width of an inage*/
+    unsigned getWidth()const{
+        return _width;
+    }
 
 protected:
     const unsigned _height;

@@ -25,16 +25,3 @@ void Dummy::scramble(int i, int j, int mode)
         _board.at(i+1).at(j).flip_horizontal();
     }
 }
-
-void Dummy::setMode(sf::Keyboard::Key toSet){
-    if(toSet==sf::Keyboard::Num1){
-        mode=1;
-    }
-    else if(toSet==sf::Keyboard::Num2){
-        mode=2;
-    }
-}
-
-int Dummy::getMode()const{
-    return mode;
-}

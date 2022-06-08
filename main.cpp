@@ -44,11 +44,11 @@ int main()
                 }
 
                 if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
-                    board->setMode(event.key.code);
+                    board->setModeOfGame(event.key.code);
                 }
             }
 
-            if(board->getMode()==1){
+            if(board->getModeOfGame()==1){
                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
                     int sizeAndMargin = dimension::size + dimension::margin;
                     int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
@@ -60,6 +60,9 @@ int main()
                         for(int j=0; j<board->getWidth()-1; j++){
                             if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
                                board->scramble(j,i,1);
+                               if(board->solved()){
+                                    window.close();
+                                }
                             }
                         }
                     }
@@ -68,6 +71,9 @@ int main()
                         for(int j=0; j<board->getWidth()-2; j++){
                             if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap){
                                 board->scramble(j,i,0);
+                                if(board->solved()){
+                                    window.close();
+                                }
                             }
                         }
                     }

@@ -10,11 +10,8 @@ public:
 
     void scramble(int i, int j, int mode) override;
 
-    void setMode(sf::Keyboard::Key toSet) override;
 
     int getMode()const;
 
 private:
-    /** 1 - first mode, 2 - second mode */
-    int mode=1;
 };
