@@ -45,17 +45,19 @@ int main()
 
                 if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
                     board->setModeOfGame(event.key.code);
-                    std::random_device dev;
-                    std::mt19937 rng(dev());
-                    std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
-                     std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
-                    std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
-                    std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
-                    std::uniform_int_distribution<std::mt19937::result_type> Iterations(0,5);
-                
-                    for(int i=0; i<Iterations(rng); i++){
-                        board->scramble(distHeight(rng),distWidth(rng),1);
-                        board->scramble(distHeight2(rng),distWidth2(rng),0);
+                    if (event.key.code == sf::Keyboard::Num1){
+                        std::random_device dev;
+                        std::mt19937 rng(dev());
+                        std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
+                        std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
+                        std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
+                        std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
+                        std::uniform_int_distribution<std::mt19937::result_type> Iterations(0,5);
+                    
+                        for(int i=0; i<Iterations(rng); i++){
+                            board->scramble(distHeight(rng),distWidth(rng),1);
+                            board->scramble(distHeight2(rng),distWidth2(rng),0);
+                        }
                     }
                 }
             }
