@@ -15,7 +15,7 @@ int main()
     sf::Event event;
     sf::Color color = sf::Color::Black;
 
-    std::string test_img{"../img/img1.png"};
+    std::string test_img{"./img/img1.png"};
     Board* board = new Dummy(test_img);
 
     while (window.isOpen())
@@ -24,7 +24,7 @@ int main()
 
         sf::Text text;
         sf::Font font;
-        font.loadFromFile("../img/OpenSans-Bold.ttf");
+        font.loadFromFile("./img/OpenSans-Bold.ttf");
         text.setFont(font);
         text.setCharacterSize(20); 
         text.setFillColor(sf::Color::White);
@@ -45,10 +45,23 @@ int main()
 
                 if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
                     board->setModeOfGame(event.key.code);
+                    std::random_device dev;
+                    std::mt19937 rng(dev());
+                    std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
+                     std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
+                    std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
+                    std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
+                    std::uniform_int_distribution<std::mt19937::result_type> Iterations(0,5);
+                
+                    for(int i=0; i<Iterations(rng); i++){
+                        board->scramble(distHeight(rng),distWidth(rng),1);
+                        board->scramble(distHeight2(rng),distWidth2(rng),0);
+                    }
                 }
             }
 
             if(board->getModeOfGame()==1){
+            
                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
                     int sizeAndMargin = dimension::size + dimension::margin;
                     int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
@@ -60,7 +73,7 @@ int main()
                         for(int j=0; j<board->getWidth()-1; j++){
                             if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
                                board->scramble(j,i,1);
-                               if(board->solved()){
+                                if(board->solved()){
                                     window.close();
                                 }
                             }
