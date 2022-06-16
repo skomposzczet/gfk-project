@@ -3,6 +3,7 @@
 #include <utility>
 #include <algorithm>
 #include <vector>
+#include <string>
 
 #include "board.hpp"
 #include "dummy.hpp"
@@ -18,7 +19,7 @@ int main()
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
-    std::string path = "../img/img" + std::to_string(numberOfImage(rng))+".png";
+    std::string path = "../img/img" + std::to_string(numberOfImage(rng)) + ".png";
     std::string test_img{path};
 
     Board* board = new Dummy(test_img);
@@ -50,14 +51,12 @@ int main()
 
                 if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
                     board->setModeOfGame(event.key.code);
-                    if (event.key.code == sf::Keyboard::Num1){
-                        std::random_device dev;
-                        std::mt19937 rng(dev());
+                    if(event.key.code == sf::Keyboard::Num1){
                         std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
                         std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
                         std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
                         std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
-                        std::uniform_int_distribution<std::mt19937::result_type> Iterations(0,5);
+                        std::uniform_int_distribution<std::mt19937::result_type> Iterations(1,5);
                     
                         for(int i=0; i<Iterations(rng); i++){
                             board->scramble(distHeight(rng),distWidth(rng),1);
@@ -67,7 +66,7 @@ int main()
                 }
             }
 
-            if(board->getModeOfGame()==1){
+            if(board->getGameMode()==1){
             
                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
                     int sizeAndMargin = dimension::size + dimension::margin;

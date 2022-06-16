@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <random>
 #include "square.hpp"
 
 class Board: public sf::Drawable
@@ -47,20 +48,20 @@ public:
      * @param j Second coordinate of a left square
      * @param mode 0 flips horizontally, 1 flips vertically
      */
-    virtual void scramble(int i, int j, int mode) = 0; // scrambling puzzle 
+    virtual void scramble(int i, int j, int mode)=0; // scrambling puzzle 
 
 
     /** @brief sets 1 for first vesrion of game and 2 for the second one*/
-    virtual void setMode(sf::Keyboard::Key toSet)=0;
+    void setModeOfGame(sf::Keyboard::Key toSet);
 
-    virtual int getMode()const=0;
+    int getGameMode()const{ 
+        return gameMode;
+    };
 
-    /** @returns height of an inage*/
     unsigned getHeight()const{
         return _height;
     }
 
-    /** @returns width of an inage*/
     unsigned getWidth()const{
         return _width;
     }
@@ -83,9 +84,9 @@ private:
     sf::Sprite _sprite;
 
     enum class Mode {normal, preview};
-    Mode mode = Mode::normal; 
-     /** 1 - first mode, 2- second mode */
-    int modeOfgame = 1;
+    Mode mode = Mode::normal;
+    /** 1 - first mode, 2- second mode */
+    int gameMode = 0;
 };
 
 #endif // BOARD_H_

@@ -58,9 +58,9 @@ bool Board::solved() const
 
 void Board::setModeOfGame(sf::Keyboard::Key toSet){
     if(toSet==sf::Keyboard::Num1){
-        modeOfGame=1;
+        gameMode=1;
     }
     else if(toSet==sf::Keyboard::Num2){
-        modeOfGame=2;
+        gameMode=2;
     }
 }
