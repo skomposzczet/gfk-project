@@ -15,7 +15,12 @@ int main()
     sf::Event event;
     sf::Color color = sf::Color::Black;
 
-    std::string test_img{"./img/img1.png"};
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
+    std::string path = "../img/img" + std::to_string(numberOfImage(rng))+".png";
+    std::string test_img{path};
+
     Board* board = new Dummy(test_img);
 
     while (window.isOpen())
@@ -24,7 +29,7 @@ int main()
 
         sf::Text text;
         sf::Font font;
-        font.loadFromFile("./img/OpenSans-Bold.ttf");
+        font.loadFromFile("../img/OpenSans-Bold.ttf");
         text.setFont(font);
         text.setCharacterSize(20); 
         text.setFillColor(sf::Color::White);
