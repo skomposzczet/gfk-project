@@ -9,5 +9,8 @@ public:
     void _move(sf::Vector2i mouse_position) override;
 
     void scramble(int i, int j, int mode) override;
+
+    bool solved() const override;
+
 private:
 };

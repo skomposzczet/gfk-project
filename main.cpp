@@ -77,28 +77,25 @@ int main()
                     int y = event.mouseButton.y;
                     for(int i=0; i<board->getHeight(); i++){
                         for(int j=0; j<board->getWidth()-1; j++){
-                            if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
-                               board->scramble(j,i,1);
-                                if(board->solved()){
-                                    window.close();
-                                }
-                            }
+                            if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap)
+                                board->scramble(j,i,1);
                         }
                     }
 
                     for(int i=0; i<=board->getHeight(); i++){
                         for(int j=0; j<board->getWidth()-2; j++){
-                            if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap){
+                            if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap)
                                 board->scramble(j,i,0);
-                                if(board->solved()){
-                                    window.close();
-                                }
-                            }
                         }
                     }
                 }
             }
         }
+
+        if (board->getGameMode() != 0)
+            if(board->solved())
+                window.close();
+
         window.draw(*board);
         window.display();
     }
