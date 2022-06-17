@@ -50,58 +50,27 @@ int main()
                 }
 
                 if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
-                    board->setModeOfGame(event.key.code);
-                    if(event.key.code == sf::Keyboard::Num1){
-                        std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
-                        std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
-                        std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
-                        std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
-                        std::uniform_int_distribution<std::mt19937::result_type> Iterations(1,5);
-                    
-                        for(int i=0; i<Iterations(rng); i++){
-                            board->scramble(distHeight(rng),distWidth(rng),1);
-                            board->scramble(distHeight2(rng),distWidth2(rng),0);
-                        }
-                    }
+                    board->setGameMode(event.key.code);
+                    board->scramble();
+                }
+                
+                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
                 }
             }
-
-            if(board->getGameMode()==1){
             
-                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-                    int sizeAndMargin = dimension::size + dimension::margin;
-                    int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
-                    int sizeAndGap = dimension::size + dimension::gap;
-                    int marginAndGap = dimension::margin + dimension::gap;
-                    int x = event.mouseButton.x;
-                    int y = event.mouseButton.y;
-                    for(int i=0; i<board->getHeight(); i++){
-                        for(int j=0; j<board->getWidth()-1; j++){
-                            if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
-                               board->scramble(j,i,1);
-                                if(board->solved()){
-                                    window.close();
-                                }
-                            }
-                        }
-                    }
-
-                    for(int i=0; i<=board->getHeight(); i++){
-                        for(int j=0; j<board->getWidth()-2; j++){
-                            if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap){
-                                board->scramble(j,i,0);
-                                if(board->solved()){
-                                    window.close();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+            board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
         }
+        if (board->getGameMode() != 0)
+            if(board->solved())
+                window.close();
+        }
+
         window.draw(*board);
         window.display();
     }
 
     delete board;
+
 }

@@ -1,27 +1,76 @@
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <utility>
+#include <algorithm>
+#include <vector>
+#include <string>
+
+#include "board.hpp"
 #include "dummy.hpp"
 
-Dummy::Dummy(const std::string& filename)
-        : Board(filename)
-    {}
-
-void Dummy::_move(sf::Vector2i mouse_position)
-    {}
-
-void Dummy::scramble(int i, int j, int mode)
+int main()
 {
-    if(mode){
-        // _board.at(i).at(j).change_position(i, j+1);
-        // _board.at(i).at(j+1).change_position(i, j);
-        // std::swap(_board.at(i).at(j), _board.at(i).at(j+1));
+    sf::RenderWindow window(sf::VideoMode(1185, 1000), L"OBRAZKOWE UKŁADANKI", sf::Style::Titlebar | sf::Style::Close);
+    window.setPosition(sf::Vector2i(40, 40));
+    window.setFramerateLimit(30);
+    sf::Event event;
+    sf::Color color = sf::Color::Black;
 
-        _board.at(i).at(j).flip_vertical();
-        _board.at(i).at(j+1).flip_vertical();
-    }
-    else{
-        // _board.at(i).at(j).change_position(i+1, j);
-        // _board.at(i+1).at(j).change_position(i, j);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
+    std::string path = "./img/img" + std::to_string(numberOfImage(rng)) + ".png";
+    std::string test_img{path};
 
-        _board.at(i).at(j).flip_horizontal();
-        _board.at(i+1).at(j).flip_horizontal();
+    Board* board = new Dummy(test_img);
+
+    while (window.isOpen())
+    {
+        window.clear(color);
+
+        sf::Text text;
+        sf::Font font;
+        font.loadFromFile("./img/OpenSans-Bold.ttf");
+        text.setFont(font);
+        text.setCharacterSize(20); 
+        text.setFillColor(sf::Color::White);
+        text.setPosition(100,925);
+        text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
+        window.draw(text);
+
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed) 
+                window.close();
+
+            else if(event.type == sf::Event::KeyPressed)
+            {
+                if(event.key.code == sf::Keyboard::Tab){
+                    board->switch_mode();
+                }
+
+                if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
+                    board->setGameMode(event.key.code);
+                    board->scramble();
+                }
+                
+                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                }
+            }
+            
+        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+            board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+        }
+        if (board->getGameMode() != 0)
+            if(board->solved())
+                window.close();
+        }
+
+        window.draw(*board);
+        window.display();
     }
+
+    delete board;
+
 }

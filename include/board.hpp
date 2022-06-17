@@ -1,92 +1,76 @@
-#ifndef BOARD_H_
-#define BOARD_H_
-
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <utility>
+#include <algorithm>
 #include <vector>
 #include <string>
-#include <iostream>
-#include <random>
-#include "square.hpp"
 
-class Board: public sf::Drawable
+#include "board.hpp"
+#include "dummy.hpp"
+
+int main()
 {
-public:
-    /**
-     * @param filename path to image for texture 
-     */
-    Board(const std::string& filename, const unsigned height = 5, const unsigned width = 6);
+    sf::RenderWindow window(sf::VideoMode(1185, 1000), L"OBRAZKOWE UKŁADANKI", sf::Style::Titlebar | sf::Style::Close);
+    window.setPosition(sf::Vector2i(40, 40));
+    window.setFramerateLimit(30);
+    sf::Event event;
+    sf::Color color = sf::Color::Black;
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
+    std::string path = "./img/img" + std::to_string(numberOfImage(rng)) + ".png";
+    std::string test_img{path};
 
-    /**
-     * @brief Switches between normal and preview mode
-     */
-    void switch_mode()
+    Board* board = new Dummy(test_img);
+
+    while (window.isOpen())
     {
-        mode = ( mode == Mode::normal ? Mode::preview : Mode::normal );
+        window.clear(color);
+
+        sf::Text text;
+        sf::Font font;
+        font.loadFromFile("./img/OpenSans-Bold.ttf");
+        text.setFont(font);
+        text.setCharacterSize(20); 
+        text.setFillColor(sf::Color::White);
+        text.setPosition(100,925);
+        text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
+        window.draw(text);
+
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed) 
+                window.close();
+
+            else if(event.type == sf::Event::KeyPressed)
+            {
+                if(event.key.code == sf::Keyboard::Tab){
+                    board->switch_mode();
+                }
+
+                if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
+                    board->setGameMode(event.key.code);
+                    board->scramble();
+                }
+                
+                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                }
+            }
+            
+        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+            board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+        }
+        if (board->getGameMode() != 0)
+            if(board->solved())
+                window.close();
+        }
+
+        window.draw(*board);
+        window.display();
     }
 
-    /**
-     * @returns true if game is solved, false otherwise
-     */
-    virtual bool solved() const;
+    delete board;
 
-    /**
-     * @brief If game is in normal mode calls actual move function, doesnt do anything in preview mode 
-     * 
-     * @param mouse_position Click position
-     */
-    void move(sf::Vector2i mouse_position)
-    {
-        if (mode == Mode::normal)
-            _move(mouse_position);
-    }
-
-    /**
-     * @brief Scrambles two squares that are next to place where user clicked
-     * 
-     * @param i First coordinate of a left square
-     * @param j Second coordinate of a left square
-     * @param mode 0 flips horizontally, 1 flips vertically
-     */
-    virtual void scramble(int i, int j, int mode)=0; // scrambling puzzle 
-
-
-    /** @brief sets 1 for first vesrion of game and 2 for the second one*/
-    void setModeOfGame(sf::Keyboard::Key toSet);
-
-    int getGameMode()const{ 
-        return gameMode;
-    };
-
-    unsigned getHeight()const{
-        return _height;
-    }
-
-    unsigned getWidth()const{
-        return _width;
-    }
-
-protected:
-    const unsigned _height;
-    const unsigned _width;
-    std::vector<std::vector<Square>> _board;
-
-    virtual void _move(sf::Vector2i mouse_position) = 0; // internal implementation of move
-
-    /**
-     * @returns id based on given position indexes 
-     */
-    int get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
-
-private:
-    sf::Texture _texture;
-    sf::RenderTexture _render_texture;
-    sf::Sprite _sprite;
-
-    enum class Mode {normal, preview};
-    Mode mode = Mode::normal;
-    /** 1 - first mode, 2- second mode */
-    int gameMode = 0;
-};
-
-#endif // BOARD_H_
+}
