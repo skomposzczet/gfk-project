@@ -78,7 +78,7 @@ public:
     }
 
 private:
-    const int _id;
+    int _id;
 
     sf::Sprite _sprite;
 

@@ -1,27 +1,12 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <utility>
+#include <algorithm>
+#include <vector>
+#include <string>
 
 #include "board.hpp"
-
-class Dummy: public Board
-{
-public:
-    Dummy(const std::string& filename)
-        : Board(filename)
-    {}
-
-    void _move(sf::Vector2i mouse_position) override
-    {}
-
-    void scramble() override
-    {
-        _board.at(1).at(1).change_position(1, 2);
-        _board.at(1).at(2).change_position(1, 1);
-
-        _board.at(1).at(1).flip_vertical();
-        _board.at(1).at(2).flip_vertical();
-    }
-};
+#include "dummy.hpp"
 
 int main()
 {
@@ -31,13 +16,27 @@ int main()
     sf::Event event;
     sf::Color color = sf::Color::Black;
 
-    std::string test_img{"../img/img1.png"};
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
+    std::string path = "../img/img" + std::to_string(numberOfImage(rng)) + ".png";
+    std::string test_img{path};
+
     Board* board = new Dummy(test_img);
-    board->scramble();
 
     while (window.isOpen())
     {
         window.clear(color);
+
+        sf::Text text;
+        sf::Font font;
+        font.loadFromFile("../img/OpenSans-Bold.ttf");
+        text.setFont(font);
+        text.setCharacterSize(20); 
+        text.setFillColor(sf::Color::White);
+        text.setPosition(100,925);
+        text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
+        window.draw(text);
 
         while (window.pollEvent(event))
         {
@@ -46,11 +45,60 @@ int main()
 
             else if(event.type == sf::Event::KeyPressed)
             {
-                if(event.key.code == sf::Keyboard::Tab)
+                if(event.key.code == sf::Keyboard::Tab){
                     board->switch_mode();
+                }
+
+                if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
+                    board->setModeOfGame(event.key.code);
+                    if(event.key.code == sf::Keyboard::Num1){
+                        std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,board->getHeight()-1);
+                        std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,board->getHeight()-2);
+                        std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,board->getWidth()-2);
+                        std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,board->getWidth()-1);
+                        std::uniform_int_distribution<std::mt19937::result_type> Iterations(1,5);
+                    
+                        for(int i=0; i<Iterations(rng); i++){
+                            board->scramble(distHeight(rng),distWidth(rng),1);
+                            board->scramble(distHeight2(rng),distWidth2(rng),0);
+                        }
+                    }
+                }
+            }
+
+            if(board->getGameMode()==1){
+            
+                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+                    int sizeAndMargin = dimension::size + dimension::margin;
+                    int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
+                    int sizeAndGap = dimension::size + dimension::gap;
+                    int marginAndGap = dimension::margin + dimension::gap;
+                    int x = event.mouseButton.x;
+                    int y = event.mouseButton.y;
+                    for(int i=0; i<board->getHeight(); i++){
+                        for(int j=0; j<board->getWidth()-1; j++){
+                            if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
+                               board->scramble(j,i,1);
+                                if(board->solved()){
+                                    window.close();
+                                }
+                            }
+                        }
+                    }
+
+                    for(int i=0; i<=board->getHeight(); i++){
+                        for(int j=0; j<board->getWidth()-2; j++){
+                            if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap){
+                                board->scramble(j,i,0);
+                                if(board->solved()){
+                                    window.close();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-
         window.draw(*board);
         window.display();
     }
