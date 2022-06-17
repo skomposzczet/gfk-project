@@ -1,76 +1,80 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <utility>
-#include <algorithm>
-#include <vector>
-#include <string>
-
-#include "board.hpp"
 #include "dummy.hpp"
 
-int main()
+Dummy::Dummy(const std::string& filename)
+        : Board(filename)
+    {}
+
+void Dummy::_move(sf::Vector2i mouse_position)
 {
-    sf::RenderWindow window(sf::VideoMode(1185, 1000), L"OBRAZKOWE UKŁADANKI", sf::Style::Titlebar | sf::Style::Close);
-    window.setPosition(sf::Vector2i(40, 40));
-    window.setFramerateLimit(30);
-    sf::Event event;
-    sf::Color color = sf::Color::Black;
+    if(gameMode==1){
+        int sizeAndMargin = dimension::size + dimension::margin;
+        int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
+        int sizeAndGap = dimension::size + dimension::gap;
+        int marginAndGap = dimension::margin + dimension::gap;
+        int x = mouse_position.x;
+        int y = mouse_position.y;
+        for(int i=0; i<_height; i++){
+            for(int j=0; j<_width-1; j++){
+                if(x >= sizeAndMargin + i * sizeAndGap && x <= sizeMarginAndGap + i * sizeAndGap && y >= dimension::margin + j * sizeAndGap && y <= sizeAndMargin + j * sizeAndGap){
+                _board.at(j).at(i).change_position(j, i+1);
+                _board.at(j).at(i+1).change_position(j, i);
 
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> numberOfImage(1,4);
-    std::string path = "./img/img" + std::to_string(numberOfImage(rng)) + ".png";
-    std::string test_img{path};
+                auto temp = _board.at(j).at(i);
+                _board.at(j).at(i) = _board.at(j).at(i+1);
+                _board.at(j).at(i+1) = temp;
 
-    Board* board = new Dummy(test_img);
+                _board.at(j).at(i).flip_vertical();
+                _board.at(j).at(i+1).flip_vertical();   
+                }   
+            }
+        }
 
-    while (window.isOpen())
-    {
-        window.clear(color);
+        for(int i=0; i<=_height; i++){
+            for(int j=0; j<_width-2; j++){
+                if(x >= dimension::margin + i * sizeAndGap && x <= sizeAndMargin + i * sizeAndGap && y>= sizeAndMargin + j * sizeAndGap && y <= sizeMarginAndGap + j * sizeAndGap){
+                    _board.at(j).at(i).change_position(j+1, i);
+                    _board.at(j+1).at(i).change_position(j, i);
 
-        sf::Text text;
-        sf::Font font;
-        font.loadFromFile("./img/OpenSans-Bold.ttf");
-        text.setFont(font);
-        text.setCharacterSize(20); 
-        text.setFillColor(sf::Color::White);
-        text.setPosition(100,925);
-        text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
-        window.draw(text);
+                    auto temp = _board.at(j).at(i);
+                    _board.at(j).at(i) = _board.at(j+1).at(i);
+                    _board.at(j+1).at(i) = temp;
 
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) 
-                window.close();
-
-            else if(event.type == sf::Event::KeyPressed)
-            {
-                if(event.key.code == sf::Keyboard::Tab){
-                    board->switch_mode();
-                }
-
-                if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
-                    board->setGameMode(event.key.code);
-                    board->scramble();
-                }
-                
-                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    _board.at(j).at(i).flip_horizontal();
+                    _board.at(j+1).at(i).flip_horizontal();
                 }
             }
-            
-        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-            board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
         }
-        if (board->getGameMode() != 0)
-            if(board->solved())
-                window.close();
-        }
-
-        window.draw(*board);
-        window.display();
     }
+}
 
-    delete board;
+void Dummy::scramble()
+{
+    if(gameMode==1){
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,_height-1);
+        std::uniform_int_distribution<std::mt19937::result_type> distHeight2(0,_height-2);
+        std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,_width-2);
+        std::uniform_int_distribution<std::mt19937::result_type> distWidth2(0,_width-1);
+        std::uniform_int_distribution<std::mt19937::result_type> Iterations(1,5);
+        int sizeAndMargin = dimension::size + dimension::margin;
+        int sizeMarginAndGap = dimension::size + dimension::margin + dimension::gap;
+        int sizeAndGap = dimension::size + dimension::gap;
+        int marginAndGap = dimension::margin + dimension::gap;
+                    
+        for(int i=0; i<Iterations(rng); i++){
+            _move(sf::Vector2i(dimension::margin + distHeight(rng)*sizeAndGap , sizeAndMargin + distWidth(rng) * sizeAndGap));
+            }
+    }
+}
 
+
+bool Dummy::solved() const
+{
+    for(unsigned i = 0 ; i < _height ; ++i)
+        for(unsigned j = 0 ; j < _width ; ++j)
+            if (get_id(i, j) != _board.at(i).at(j).check())
+                return false;
+
+    return true;
 }
