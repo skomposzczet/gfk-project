@@ -30,7 +30,8 @@ int main()
     text.setPosition(100,925);
     text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
 
-    Board* board = new Dummy(test_img);
+    Board* board ;
+    Game_version game_version = Game_version::None;
 
     while (window.isOpen())
     {
@@ -43,33 +44,44 @@ int main()
 
             else if(event.type == sf::Event::KeyPressed)
             {
-                if(event.key.code == sf::Keyboard::Tab){
-                    board->switch_mode();
+                if(game_version != Game_version::None){
+                    if(event.key.code == sf::Keyboard::Tab){
+                        board->switch_mode();
+                    }
                 }
+                else {
+                    if (event.key.code == sf::Keyboard::Num1){
+                        board = new Version1(test_img);
+                        game_version = Game_version::First;
+                        board->scramble();
+                    }
 
-                if (event.key.code == sf::Keyboard::Num1 || event.key.code == sf::Keyboard::Num2){
-                    board->setGameMode(event.key.code);
-                    board->scramble();
-                }
-                
-                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    if ( event.key.code == sf::Keyboard::Num2){
+                        board = new Version2(test_img);
+                        game_version = Game_version::Secund;
+                        board->scramble();
+                    }
                 }
             }
             
-        if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-            board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+            if(game_version != Game_version::None)
+                if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+                    board->move(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
         }
-        if (board->getGameMode() != 0)
+        
+        if(game_version != Game_version::None) {
             if(board->solved())
                 window.close();
-        }
 
-        window.draw(text);
-        window.draw(*board);
+            window.draw(*board);
+        }
+        else
+            window.draw(text);
+        
         window.display();
     }
 
-    delete board;
+    if(board != nullptr)
+        delete board;
 
 }

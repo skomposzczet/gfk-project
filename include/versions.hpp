@@ -2,6 +2,8 @@
 #define VERSIONS_H_
 #include "board.hpp"
 
+enum class Game_version {None, First, Secund};
+
 class Version1: public Board
 {
 public:
@@ -26,6 +28,7 @@ public:
 
     bool solved() const override;
 
+    sf::Texture black_texture;
 private:
 };
 
