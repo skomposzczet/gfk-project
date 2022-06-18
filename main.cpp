@@ -5,8 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "board.hpp"
-#include "dummy.hpp"
+#include "versions.hpp"
 
 int main()
 {
