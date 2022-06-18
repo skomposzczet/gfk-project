@@ -65,16 +65,6 @@ void Version1::scramble()
     }
 }
 
-bool Version1::solved() const
-{
-    for(unsigned i = 0 ; i < _height ; ++i)
-        for(unsigned j = 0 ; j < _width ; ++j)
-            if (get_id(i, j) != _board.at(i).at(j).check())
-                return false;
-
-    return true;
-}
-
 Version2::Version2(const std::string& filename)
         : Board(filename)
 {   
@@ -140,15 +130,4 @@ void Version2::scramble()
     for(int i=0; i<Iterations(rng); i++){
         _move(sf::Vector2i(dimension::margin + distHeight(rng)*sizeAndGap , sizeAndMargin + distWidth(rng) * sizeAndGap));
     }
-}
-
-
-bool Version2::solved() const
-{
-    for(unsigned i = 0 ; i < _height ; ++i)
-        for(unsigned j = 0 ; j < _width ; ++j)
-            if (get_id(i, j) != _board.at(i).at(j).id())
-                return false;
-
-    return true;
 }

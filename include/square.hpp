@@ -77,12 +77,6 @@ public:
         return _id;
     }
 
-    void change_texture(sf::Texture t)
-    {
-        _sprite.setTexture(t);
-        _sprite.setTextureRect(sf::IntRect(0, 0, dimension::size, dimension::size));
-    }
-
 private:
     int _id;
 

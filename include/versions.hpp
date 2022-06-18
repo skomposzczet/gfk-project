@@ -13,8 +13,6 @@ public:
 
     void scramble() override;
 
-    bool solved() const override;
-
 };
 
 class Version2: public Board
@@ -25,8 +23,6 @@ public:
     void _move(sf::Vector2i mouse_position) override;
 
     void scramble() override;
-
-    bool solved() const override;
 
     sf::Texture black_texture;
 private:
