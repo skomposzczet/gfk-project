@@ -22,21 +22,20 @@ int main()
     std::string path = "../img/img" + std::to_string(numberOfImage(rng)) + ".png";
     std::string test_img{path};
 
+    sf::Text text;
+    sf::Font font;
+    font.loadFromFile("../img/OpenSans-Bold.ttf");
+    text.setFont(font);
+    text.setCharacterSize(20); 
+    text.setFillColor(sf::Color::White);
+    text.setPosition(100,925);
+    text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
+
     Board* board = new Dummy(test_img);
 
     while (window.isOpen())
     {
         window.clear(color);
-
-        sf::Text text;
-        sf::Font font;
-        font.loadFromFile("../img/OpenSans-Bold.ttf");
-        text.setFont(font);
-        text.setCharacterSize(20); 
-        text.setFillColor(sf::Color::White);
-        text.setPosition(100,925);
-        text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
-        window.draw(text);
 
         while (window.pollEvent(event))
         {
@@ -67,6 +66,7 @@ int main()
                 window.close();
         }
 
+        window.draw(text);
         window.draw(*board);
         window.display();
     }
