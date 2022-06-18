@@ -42,17 +42,15 @@ public:
     }
 
     /**
-     * @brief Scrambles two squares that are next to place where user clicked
-     * 
-     * @param i First coordinate of a left square
-     * @param j Second coordinate of a left square
-     * @param mode 0 flips horizontally, 1 flips vertically
+     * @brief scrambles puzzles at the beginning of the game
      */
-    virtual void scramble(int i, int j, int mode)=0; // scrambling puzzle 
+    virtual void scramble()=0; // scrambling puzzle 
+
+    // virtual void shake(Board* board)=0;
 
 
     /** @brief sets 1 for first vesrion of game and 2 for the second one*/
-    void setModeOfGame(sf::Keyboard::Key toSet);
+    void setGameMode(sf::Keyboard::Key toSet);
 
     int getGameMode()const{ 
         return gameMode;
@@ -77,6 +75,8 @@ protected:
      * @returns id based on given position indexes 
      */
     int get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
+    /** @param 1  first mode, @param 2 second mode */
+    int gameMode = 0;
 
 private:
     sf::Texture _texture;
@@ -85,8 +85,6 @@ private:
 
     enum class Mode {normal, preview};
     Mode mode = Mode::normal;
-    /** 1 - first mode, 2- second mode */
-    int gameMode = 0;
 };
 
 #endif // BOARD_H_

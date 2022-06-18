@@ -56,7 +56,7 @@ bool Board::solved() const
     return true;
 }
 
-void Board::setModeOfGame(sf::Keyboard::Key toSet){
+void Board::setGameMode(sf::Keyboard::Key toSet){
     if(toSet==sf::Keyboard::Num1){
         gameMode=1;
     }
