@@ -117,63 +117,32 @@ void Version2::_move(sf::Vector2i mouse_position)
 
 void Version2::scramble()
 {
-    // std::random_device dev;
-    // std::mt19937 rng(dev());
-    // std::uniform_int_distribution<> coin(0, 1);
-    // std::uniform_int_distribution<> Iterations(1,5);
-                // 
-    // int current_black_x = _width - 1;
-    // int current_black_y = _height - 1;
-// 
-    // int size = Iterations(rng);
-// 
-    // for(int i=0; i < size; i++){
-// 
-        // int tmp_x = current_black_x;
-        // int tmp_y = current_black_y;
-// 
-        // int c = coin(rng);
-// 
-        // std::cout << c << std::endl;
-// 
-        // if(c){
-            // if(current_black_x == 0)
-                // tmp_x = current_black_x + 1;
-            // else if(current_black_x == _width - 1)
-                // tmp_x = current_black_x - 1;
-            // else{
-                    // c = coin(rng);
-                // std::cout << c << std::endl;
-                // if(c)
-                    // tmp_x = current_black_x + 1;
-                // else
-                    // tmp_x = current_black_x - 1;
-            // }
-        // }
-        // else{
-            // if(current_black_y == 0)
-                // tmp_y = current_black_y + 1;
-            // else if(current_black_y ==_height - 1)
-                // tmp_y = current_black_y - 1;
-            // else{
-                // c = coin(rng);
-                // std::cout << c << std::endl;
-                // if(c)
-                    // tmp_y = current_black_y + 1;
-                // else
-                    // tmp_y = current_black_y - 1;
-            // }
-        // }
-// 
-        // std::cout << current_black_x << current_black_y << tmp_x << tmp_y << std::endl;
-// 
-        // swap_squares(current_black_x, current_black_y, tmp_x, tmp_y);
-        // current_black_x = tmp_x;
-        // current_black_y = tmp_y;
-    // }
-// 
-        // current_black_x = _width - 1;
-        // current_black_y = _height - 1;
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<> r(0, 3);
+    std::uniform_int_distribution<> Iterations(4,10);
+
+    int size = Iterations(rng);
+
+    for(int i=0; i < size; i++){
+
+        int x_b = dimension::margin + current_black_x * (dimension::size + dimension::gap) + dimension::size/2;
+        int y_b = dimension::margin + current_black_y * (dimension::size + dimension::gap) + dimension::size/2;
+
+        int c = r(rng);
+
+        std::cout << c << std::endl;
+
+        if(c == 0)
+            _move(sf::Vector2i(x_b + dimension::size, y_b));
+        if(c == 1)
+            _move(sf::Vector2i(x_b - dimension::size, y_b));
+        if(c == 2)
+            _move(sf::Vector2i(x_b, y_b + dimension::size));
+        if(c == 3)
+            _move(sf::Vector2i(x_b, y_b - dimension::size));
+     
+    }
 }
 
 void Version2::swap_squares(int x1, int y1, int x2, int y2){
