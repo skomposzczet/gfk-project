@@ -21,16 +21,23 @@ int main()
     std::string path = "../img/img" + std::to_string(numberOfImage(rng)) + ".png";
     std::string test_img{path};
 
-    sf::Text text;
+    sf::Text text, title;
     sf::Font font;
-    font.loadFromFile("../img/OpenSans-Bold.ttf");
-    text.setFont(font);
-    text.setCharacterSize(20); 
-    text.setFillColor(sf::Color::White);
-    text.setPosition(100,925);
-    text.setString("1 - wersja z zamienianiem, 2 - wersja z przesuwaniem");
 
-    Board* board ;
+    font.loadFromFile("../img/OpenSans-Bold.ttf");
+    title.setFont(font);
+    title.setCharacterSize(40);
+    title.setFillColor(sf::Color::White);
+    text.setFont(font);
+    text.setCharacterSize(30); 
+    text.setFillColor(sf::Color::White);
+
+    title.setPosition(400, 400);
+    text.setPosition(400, 460);
+    title.setString(L"Wybór wersji:");
+    text.setString("1 - wersja z zamienianiem \n2 - wersja z przesuwaniem");
+
+    Board* board = nullptr;
     Game_version game_version = Game_version::None;
 
     while (window.isOpen())
@@ -75,8 +82,10 @@ int main()
 
             window.draw(*board);
         }
-        else
+        else{
+            window.draw(title);
             window.draw(text);
+        }
         
         window.display();
     }
