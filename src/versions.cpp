@@ -131,8 +131,6 @@ void Version2::scramble()
 
         int c = r(rng);
 
-        std::cout << c << std::endl;
-
         if(c == 0)
             _move(sf::Vector2i(x_b + dimension::size, y_b));
         if(c == 1)
@@ -141,7 +139,7 @@ void Version2::scramble()
             _move(sf::Vector2i(x_b, y_b + dimension::size));
         if(c == 3)
             _move(sf::Vector2i(x_b, y_b - dimension::size));
-     
+
     }
 }
 
