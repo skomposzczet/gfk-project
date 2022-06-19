@@ -120,7 +120,7 @@ void Version2::scramble()
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<> r(0, 3);
-    std::uniform_int_distribution<> Iterations(4,10);
+    std::uniform_int_distribution<> Iterations(8,14);
 
     int size = Iterations(rng);
 
