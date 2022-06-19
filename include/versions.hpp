@@ -24,8 +24,12 @@ public:
 
     void scramble() override;
 
-    sf::Texture black_texture;
 private:
+    sf::Texture black_texture;
+    unsigned current_black_x;
+    unsigned current_black_y;
+
+    void swap_squares(int x1, int y1, int x2, int y2);
 };
 
 #endif // VERSIONS_H_
