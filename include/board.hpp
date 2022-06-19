@@ -46,24 +46,6 @@ public:
      */
     virtual void scramble()=0; // scrambling puzzle 
 
-    // virtual void shake(Board* board)=0;
-
-
-    /** @brief sets 1 for first vesrion of game and 2 for the second one*/
-    void setGameMode(sf::Keyboard::Key toSet);
-
-    int getGameMode()const{ 
-        return gameMode;
-    };
-
-    unsigned getHeight()const{
-        return _height;
-    }
-
-    unsigned getWidth()const{
-        return _width;
-    }
-
 protected:
     const unsigned _height;
     const unsigned _width;
@@ -75,8 +57,6 @@ protected:
      * @returns id based on given position indexes 
      */
     int get_id(const unsigned i, const unsigned j) const { return i*_width + j; }
-    /** @param 1  first mode, @param 2 second mode */
-    int gameMode = 0;
 
 private:
     sf::Texture _texture;

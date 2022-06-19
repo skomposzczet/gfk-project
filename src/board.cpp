@@ -55,12 +55,3 @@ bool Board::solved() const
 
     return true;
 }
-
-void Board::setGameMode(sf::Keyboard::Key toSet){
-    if(toSet==sf::Keyboard::Num1){
-        gameMode=1;
-    }
-    else if(toSet==sf::Keyboard::Num2){
-        gameMode=2;
-    }
-}
